@@ -1,6 +1,7 @@
 how to do blog?
 
 IMPROVE
+delay the hero picture animation until the loading screen finishes
 back to top arrow doesn't show up
 stat count-up doesn't work
 gallery lightbox doesn't work
