@@ -23,4 +23,5 @@ Scroll reveals — every major section (About, Achievements, Gallery, Instructio
 Active nav highlight — the nav link for whichever section you're currently in turns red as you scroll
 Smooth scroll with offset — clicking nav links scrolls smoothly and lands perfectly below the fixed nav bar (no heading getting cut off)
 Achievement card hover — a gold left border slides in on hover with a subtle background warm
-Gallery caption slide-up — captions are hidden by default and slide up gracefully when hovering over the main gallery image
+Gallery caption slide-up — captions are hidden by default and slide up when hovering over the main gallery image
+gallery auto-scroll every 5s, if you switch photos manually the timer resets
