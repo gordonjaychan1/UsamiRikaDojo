@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -608,31 +608,31 @@
   }
 
   .hero-image-col img {
-    animation: heroImgReveal 2.2s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+    animation: heroImgReveal 2.2s cubic-bezier(0.22, 1, 0.36, 1) 2.2s both;
   }
 
   .hero-kicker {
-    animation: fadeUp 1.4s cubic-bezier(0.22, 1, 0.36, 1) 1.1s both;
+    animation: fadeUp 1.4s cubic-bezier(0.22, 1, 0.36, 1) 3.1s both;
   }
 
   .hero-title {
-    animation: fadeUp 1.6s cubic-bezier(0.22, 1, 0.36, 1) 1.3s both;
+    animation: fadeUp 1.6s cubic-bezier(0.22, 1, 0.36, 1) 3.3s both;
   }
 
   .hero-subtitle-jp {
-    animation: fadeUp 1.4s cubic-bezier(0.22, 1, 0.36, 1) 1.7s both;
+    animation: fadeUp 1.4s cubic-bezier(0.22, 1, 0.36, 1) 3.7s both;
   }
 
   .hero-tagline {
-    animation: fadeUp 1.4s cubic-bezier(0.22, 1, 0.36, 1) 2.0s both;
+    animation: fadeUp 1.4s cubic-bezier(0.22, 1, 0.36, 1) 4.0s both;
   }
 
   .cta-row {
-    animation: fadeUp 1.4s cubic-bezier(0.22, 1, 0.36, 1) 2.3s both;
+    animation: fadeUp 1.4s cubic-bezier(0.22, 1, 0.36, 1) 4.3s both;
   }
 
   .dojo-mark {
-    animation: fadeIn 2.4s ease 2.6s both;
+    animation: fadeIn 2.4s ease 4.6s both;
   }
   .dojo-mark {
     position: absolute;
@@ -769,6 +769,7 @@
   .gallery-main .g-cap {
     transform: translateY(12px) !important;
     transition: opacity 0.4s ease, transform 0.4s ease !important;
+    pointer-events: none;
   }
 
   /* ── 5. ACHIEVEMENT CARD HOVER ── */
@@ -886,6 +887,15 @@
   </button>
 </nav>
 
+<div id="backToTop" aria-label="Back to top" role="button" tabindex="0">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</div>
+
+<div id="imgLightbox">
+  <span id="imgLightboxClose">&#x2715;</span>
+  <img id="imgLightboxImg" src="" alt="">
+</div>
+
 <!-- HERO -->
 <section id="hero">
   <div class="hero-image-col">
@@ -937,11 +947,14 @@
       <h2 class="section-title"><span data-en="Rika Usami" data-jp="代表 宇佐美 里香">Rika Usami</span><em style="display:none"></em></h2>
       <div class="section-rule" style="margin-left:0;"></div>
     </div>
-    <p class="profile-intro bilingual"><span class="lang-en">Born in Tokyo, Rika Usami devoted herself to karate and rose to become one of Japan's most respected kata champions.</span><span class="lang-jp">東京都出身。空手の道に真摯に向き合い、日本を代表する形チャンピオンの一人として高く評価される。</span></p>
-    <p class="bilingual"><span class="lang-en">She began karate at age 10 at her local Kanamachi Dojo, studying Goju-ryu under Masters Terada and Konno. She went on to study Shito-ryu at Teikyo High School, winning the Inter-High School Championship in her third year.</span><span class="lang-jp">10歳で地元の金町道場に入門し、寺田師範・金野師範のもとで剛柔流空手を学ぶ。高校は帝京高校空手道部に進学し、糸東流を修める。高校3年時には全国高等学校総合体育大会（インターハイ）で優勝を果たした。</span></p>
-    <p class="bilingual"><span class="lang-en">At Kokushikan University, she met Master Yoshimi Inoue of Tottori Prefecture, whose guidance proved transformative. She won the World Junior and Cadet Championships, earned a place on the national team, and in her fourth year won the All-Japan Championship.</span><span class="lang-jp">国士舘大学進学後、鳥取県の井上慶身先生と出会い、さらなる技術の研鑽に励む。世界ジュニア・カデット空手道選手権大会で優勝し、ナショナルチーム入りを果たす。大学4年時には全日本空手道選手権大会で優勝した。</span></p>
-    <p class="bilingual"><span class="lang-en">After graduating, she moved to Tottori to train under Master Inoue to pursue her dream of becoming a world champion. In 2012, at her second World Championships, she claimed the gold medal in Women's Kata. Then, she went on to serve as a national team coach and a karate ambassador ahead of the Tokyo Olympics.</span><span class="lang-jp">大学卒業後は「世界一」を目標に鳥取へ移住し、井上慶身先生のもとで鍛錬を重ねる。2012年、2度目の出場となった世界空手道選手権大会において女子形で金メダルを獲得。その後はナショナルチームコーチを務めるとともに、東京オリンピックに向けた空手アンバサダーとしても活動した。</span></p>
-    <p class="bilingual"><span class="lang-en">Today, Usami coaches both domestic and international athletes from her dojo in Tottori Prefecture, and serves as a special physical education instructor for the Tottori Prefectural Sports Association.</span><span class="lang-jp">現在は公益財団法人鳥取県スポーツ協会の特任体育指導員として勤務。国内外の選手への指導にあたるほか、空手道の普及・発展にも尽力している。</span></p>
+    <p class="profile-intro bilingual"><span class="lang-en">Born in Tokyo, Rika Usami devoted herself to karate and rose to become one of Japan's most respected kata champions.</span><span class="lang-jp">東京都出身。空手道に真摯に向き合い、日本を代表する形チャンピオンの一人として高く評価される。</span></p>
+    <p class="bilingual"><span class="lang-en">Usami began practicing karate at the age of 10 (fifth grade) at her local Kanamachi Dojo. Under Shihan Terada and Shihan Konno, she studied Goju-ryu until her third year of junior high school.</span><span class="lang-jp">10歳の頃（小学5年）から地元の金町道場で空手を始める。寺田師範・金野師範のもとで剛柔流を学び、中学3年生まで道場に通う。
+高校から空手道部のある帝京高校に進学し、祖父江利久先生・祖父江元太郎先生のもとで糸東流を学ぶ。高校3年生の時には全国高等学校総合体育大会（インターハイ）で優勝。その後、国士舘大学に進学する。</span></p>
+    <p class="bilingual"><span class="lang-en">She later enrolled at Teikyo High School, which has a renowned karate program, where she studied Shito-ryu under Toshihisa Sobue and Gentaro Sobue. During her third year of high school, she won the National High School Inter-High Championships before continuing her studies at Kokushikan University.</span><span class="lang-jp">大学1年生の時、大学監督の紹介で鳥取県の井上慶身先生と出会い、技術を磨く。世界ジュニア・カデット空手道選手権大会で優勝し、その後ナショナルチーム入りを果たす。大学4年生で全日本空手道選手権大会に優勝した。</span></p>
+    <p class="bilingual"><span class="lang-en">In her first year at university, she was introduced by her coach to Yoshimi Inoue in Tottori Prefecture, under whom she further refined her technique. She went on to win the World Junior &amp; Cadet Karate Championships and subsequently earned a place on Japan's national team. In her fourth year at university, she captured the title at the All Japan Karate Championships.</span><span class="lang-jp">大学卒業後、「世界一」を目指して鳥取県へ移住し、井上先生のもとで修練を重ねる。移住3年目に初めて世界大会へ出場し3位となるが、2年後の2012年、自身2度目の世界大会で女子形金メダルを獲得した。</span></p>
+    <p class="bilingual"><span class="lang-en">After graduating, Usami relocated to Tottori with the goal of becoming the best in the world, continuing her training under Inoue. In her third year there, she competed at the World Karate Championships for the first time and finished with a bronze medal. Two years later, in 2012, she claimed the gold medal in women's kata at her second appearance at the World Championships.</span><span class="lang-jp">大学卒業後、「世界一」を目指して鳥取県へ移住し、井上先生のもとで修練を重ねる。移住3年目に初めて世界大会へ出場し3位となるが、2年後の2012年、自身2度目の世界大会で女子形金メダルを獲得した。</span></p>
+    <p class="bilingual"><span class="lang-en">She retired from competition in 2013 and was appointed as a coach for Japan's national team. She then entered the Graduate School of Sport System at Kokushikan University, where she spent two years coaching the university's karate club. During this period, she also served as a KARATE Ambassador, promoting the sport as part of the campaign for its inclusion in the Tokyo Olympic Games. In 2015, she returned to Tottori and was appointed Chair of the Tokyo 2020 Olympic Strengthening Committee.</span><span class="lang-jp">翌2013年に現役を引退。その後はナショナルチームコーチに就任し、国士舘大学大学院スポーツ・システム研究科へ進学。2年間専任コーチとして空手道部の指導にあたる。また、東京オリンピック採用に向けたKARATEアンバサダーとして空手の普及活動も行った。2015年には鳥取県へ移住し、2020東京オリンピック強化委員長に就任。</span></p>
+    <p class="bilingual"><span class="lang-en">Today, Usami serves as a Special Physical Education Instructor with the Tottori Sports Association. In addition to coaching athletes from Japan and around the world, she is dedicated to promoting and advancing the art of karate.</span><span class="lang-jp">現在は公益財団法人鳥取県スポーツ協会の特任体育指導員として勤務。国内外の選手への指導にあたるほか、空手道の普及・発展にも尽力している。</span></p>
   </div>
 </section>
 
@@ -1232,6 +1245,8 @@
 
     function applyLanguage() {
       document.querySelectorAll('[data-en][data-jp]').forEach(el => {
+        // Don't overwrite stat nums while they're counting up
+        if (el.getAttribute('data-counting') === '1') return;
         const text = isJapanese ? el.getAttribute('data-jp') : el.getAttribute('data-en');
         if (text) el.textContent = text;
       });
@@ -1264,14 +1279,14 @@
 
     langToggle.addEventListener('click', () => {
       // Brief crossfade on toggle
-      document.body.style.transition = 'opacity 0.18s ease';
+      document.body.style.transition = 'opacity 0.216s ease';
       document.body.style.opacity = '0.6';
       setTimeout(() => {
         isJapanese = !isJapanese;
         applyLanguage();
         document.body.style.opacity = '1';
-        setTimeout(() => { document.body.style.transition = ''; }, 240);
-      }, 180);
+        setTimeout(() => { document.body.style.transition = ''; }, 290);
+      }, 216);
       try { localStorage.setItem('lang', isJapanese ? 'jp' : 'en'); } catch(e) {}
     });
 
@@ -1348,10 +1363,10 @@
   // ── 6. STAT COUNT-UP ───────────────────────────────────────────
   (function() {
     const statEls = document.querySelectorAll('.stat-num[data-target]');
-    let done = false;
-    const statObs = new IntersectionObserver(entries => {
-      if (done || !entries[0].isIntersecting) return;
-      done = true;
+    window._statCountDone = false;
+    function runCountUp() {
+      if (window._statCountDone) return;
+      window._statCountDone = true;
       statEls.forEach(el => {
         const target = parseInt(el.getAttribute('data-target'));
         const suffix = el.getAttribute('data-suffix') || '';
@@ -1360,13 +1375,28 @@
         const tick = now => {
           const p = Math.min((now - start) / duration, 1);
           const ease = 1 - Math.pow(1 - p, 3);
-          el.textContent = Math.round(ease * target) + suffix;
+          const val = Math.round(ease * target);
+          el.textContent = val + suffix;
+          // Store current display so applyLanguage won't clobber it
+          el.setAttribute('data-counting', val === target ? '' : '1');
           if (p < 1) requestAnimationFrame(tick);
+          else el.removeAttribute('data-counting');
         };
         requestAnimationFrame(tick);
       });
-    }, { threshold: 0.5 });
-    if (statEls.length) statObs.observe(statEls[0].closest('.stat-band'));
+    }
+    // Delay by 2s to run after loading screen, then trigger
+    setTimeout(() => {
+      const statBand = document.querySelector('.stat-band');
+      if (!statBand) return;
+      const obs = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) { runCountUp(); obs.disconnect(); }
+      }, { threshold: 0.3 });
+      obs.observe(statBand);
+      // Also fire immediately if already visible
+      const rect = statBand.getBoundingClientRect();
+      if (rect.top < window.innerHeight) runCountUp();
+    }, 2000);
   })();
 
   // ── 7. GALLERY LIGHTBOX ────────────────────────────────────────
@@ -1419,15 +1449,12 @@
 
 </script>
 
-<div id="backToTop" aria-label="Back to top" role="button" tabindex="0">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-</div>
-
-<!-- Image lightbox -->
-<div id="imgLightbox">
-  <span id="imgLightboxClose">&#x2715;</span>
-  <img id="imgLightboxImg" src="" alt="">
-</div>
-
 </body>
 </html>
+
+
+
+
+
+
+
