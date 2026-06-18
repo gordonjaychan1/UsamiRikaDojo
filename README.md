@@ -3,7 +3,7 @@ how to do blog?
 IMPROVE
 
 parallax
-make japanese profile section match her website's
+
 Parallax hero — the photo scrolls slightly slower than the page for a depth effect
 
 
