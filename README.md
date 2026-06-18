@@ -1,8 +1,6 @@
+IMPROVE 
+
 how to do blog?
-
-IMPROVE
-
-parallax
 
 Parallax hero — the photo scrolls slightly slower than the page for a depth effect
 
