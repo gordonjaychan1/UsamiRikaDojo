@@ -1,4 +1,6 @@
 IMPROVE 
+in japanese it says multiple years in achievements
+
 
 how to do blog?
 
