@@ -1,5 +1,10 @@
 IMPROVE 
 
+hero image scaling: don't cut off top of head and left of the image. 
+object-position: 40% center will have the left arm in but shuto uke might be too close to right border
+https://static.wixstatic.com/media/829f75_fe8905e7ae9e475589ed5cb91efd8f55~mv2.jpg
+
+
 
 WORKS
 Loading screen — the dojo name in gold pulses gently on a dark background for ~2 seconds, then fades away into the reveal of the title card
