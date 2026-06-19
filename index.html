@@ -123,14 +123,13 @@
   .hero-image-col img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center top;
+    object-fit: contain;
+    object-position: center center;
     filter: brightness(0.92);
-    transform-origin: center 38%;
   }
 
   .hero-image-col {
-    background: var(--paper);
+    background: var(--ink);
   }
 
   .hero-text-col {
@@ -605,7 +604,7 @@
   /* ── HERO ENTRANCE ANIMATIONS ── */
   @keyframes heroImgReveal {
     from { opacity: 0; transform: scale(1.10); }
-    to   { opacity: 1; transform: scale(0.9); }
+    to   { opacity: 1; transform: scale(1); }
   }
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(22px); }
@@ -979,7 +978,7 @@
 <!-- HERO -->
 <section id="hero">
   <div class="hero-image-col">
-    <img src="https://static.wixstatic.com/media/829f75_fe8905e7ae9e475589ed5cb91efd8f55~mv2.jpg" alt="Rika Usami — Japan Karate Dojo">
+    <img src="hero.jpg" alt="Rika Usami — Japan Karate Dojo">
   </div>
   <div class="hero-text-col">
     <h1 class="hero-title">
@@ -1550,7 +1549,7 @@
     const onScroll = () => {
       const scrolled = window.scrollY;
       if (scrolled < window.innerHeight) {
-        heroImg.style.transform = `scale(0.9) translateY(${scrolled * 0.18}px)`;
+        heroImg.style.transform = `scale(1) translateY(${scrolled * 0.18}px)`;
       }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
