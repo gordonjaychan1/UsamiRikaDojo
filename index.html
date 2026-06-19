@@ -126,6 +126,11 @@
     object-fit: cover;
     object-position: center top;
     filter: brightness(0.92);
+    transform-origin: center 38%;
+  }
+
+  .hero-image-col {
+    background: var(--paper);
   }
 
   .hero-text-col {
@@ -600,7 +605,7 @@
   /* ── HERO ENTRANCE ANIMATIONS ── */
   @keyframes heroImgReveal {
     from { opacity: 0; transform: scale(1.10); }
-    to   { opacity: 1; transform: scale(1); }
+    to   { opacity: 1; transform: scale(0.9); }
   }
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(22px); }
@@ -1545,7 +1550,7 @@
     const onScroll = () => {
       const scrolled = window.scrollY;
       if (scrolled < window.innerHeight) {
-        heroImg.style.transform = `scale(1) translateY(${scrolled * 0.18}px)`;
+        heroImg.style.transform = `scale(0.9) translateY(${scrolled * 0.18}px)`;
       }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
