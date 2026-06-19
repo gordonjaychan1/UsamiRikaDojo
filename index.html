@@ -876,6 +876,7 @@
   <ul class="nav-links">
     <li><a href="#about" data-en="About Rika Dojo" data-jp="Rika道場について">About Rika Dojo</a></li>
     <li><a href="#achievements" data-en="Achievements" data-jp="主な戦績">Achievements</a></li>
+    <li><a href="#blog" data-en="Blog" data-jp="ブログ">Blog</a></li>
     <li><a href="#gallery" data-en="Gallery" data-jp="ギャラリー">Gallery</a></li>
     <li><a href="#instruction" data-en="Instruction" data-jp="指導について">Instruction</a></li>
     <li><a href="#contact" data-en="Contact" data-jp="お問い合わせ">Contact</a></li>
@@ -997,11 +998,35 @@
     </div>
     <div class="achievement-card">
       <span class="achievement-medal">金</span>
-      <div class="achievement-year">Multiple Years</div>
+      <div class="achievement-year" data-en="Multiple Years" data-jp="複数年">Multiple Years</div>
       <div class="achievement-title" data-en="WKF Premier League" data-jp="WKFプレミアリーグ">WKF Premier League</div>
       <div class="achievement-detail" data-en="Champion — 7 times" data-jp="７回 優勝">Champion — 7 times</div>
     </div>
   </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog" class="reveal" style="padding: 7rem 6vw; background: var(--white);">
+  <div class="section-header">
+    <span class="section-kicker" data-en="News" data-jp="お知らせ">News</span>
+    <h2 class="section-title"><span data-en="From the Dojo" data-jp="道場より">From the Dojo</span></h2>
+    <div class="section-rule"></div>
+  </div>
+  <script type="application/json" id="blog-data">
+  [
+    {
+      "slug": "new-dojo-opening",
+      "date_en": "March 17, 2025",
+      "date_jp": "更新日：3月17日",
+      "title_en": "New Rika Dojo Opening!",
+      "title_jp": "新Rika道場開設！",
+      "image": "usamidojo.avif",
+      "body_en": "We are pleased to announce the opening of Usami Rika Dojo.\n\nThank you for your support.\n\nThe dojo is located in Iwami Town, Tottori Prefecture, in a nature-rich setting near the Geopark Uradome Coast and Iwai Hot Spring — a truly wonderful environment for karate training.\n\nInside the dojo, only the sound of wind-moved trees and training uniforms echo in the stillness.\n\nIt is the perfect space for looking inward and deepening your practice.\n\nWe look forward to your continued support of Usami Rika Dojo.",
+      "body_jp": "この度、新しく日本空手道宇佐美Rika道場を開設いたしました。\n\nよろしくお願いします。\n\n鳥取県岩美町のジオパーク浦富海岸や岩井温泉など、自然豊かな場所に所在し、\n\n空手の稽古をするにはとっても素晴らしい環境です。\n\n道場内は静まり返る空間の中で風で揺れる木々の音と道着の音だけが響き渡ります。\n\n自分自身の内面を見つめるのにぴったりな空間です！\n\n今後とも宇佐美Rika道場を宜しくお願い致します。"
+    }
+  ]
+  </script>
+  <div id="blog-posts-container" style="max-width:800px;margin:0 auto;"></div>
 </section>
 
 <!-- GALLERY -->
@@ -1022,13 +1047,13 @@
       <img src="https://static.wixstatic.com/media/829f75_ea605b34689b4b3abb384d8c500628d1~mv2.jpg" alt="Guangzhou Asian Games 2010" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center center;opacity:0;transition:opacity 0.5s ease;">
       <img src="https://static.wixstatic.com/media/829f75_aa44abe82ef449928d23c429ee3a76e4~mv2.jpg" alt="Individual Kata, Asian Games" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center center;opacity:0;transition:opacity 0.5s ease;">
 
-      <div class="g-cap active" data-en="2012 WKF World Championships · Paris, France" data-jp="2012年WKF世界空手道選手権大会・パリ" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(26,22,18,0.75),transparent);padding:2rem 2.5rem 1.5rem;color:#fefcf8;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 0.5s;">2012 WKF World Championships · Paris, France</div>
-      <div class="g-cap" data-en="Kata — WKF World Championships 2012" data-jp="形・WKF世界空手道選手権大会2012" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(26,22,18,0.75),transparent);padding:2rem 2.5rem 1.5rem;color:#fefcf8;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 0.5s;">Kata — WKF World Championships 2012</div>
-      <div class="g-cap" data-en="Championship Performance, Paris 2012" data-jp="世界選手権・2012年パリ" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(26,22,18,0.75),transparent);padding:2rem 2.5rem 1.5rem;color:#fefcf8;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 0.5s;">Championship Performance, Paris 2012</div>
-      <div class="g-cap" data-en="Women's Kata Final, 2012" data-jp="女子形決勝・2012年" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(26,22,18,0.75),transparent);padding:2rem 2.5rem 1.5rem;color:#fefcf8;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 0.5s;">Women's Kata Final, 2012</div>
-      <div class="g-cap" data-en="Asian Games 2010 · Gold Medal · Guangzhou" data-jp="アジア競技大会2010年・金メダル・広州" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(26,22,18,0.75),transparent);padding:2rem 2.5rem 1.5rem;color:#fefcf8;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 0.5s;">Asian Games 2010 · Gold Medal · Guangzhou</div>
-      <div class="g-cap" data-en="Individual Kata · Asian Games 2010" data-jp="個人形・アジア競技大会2010年" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(26,22,18,0.75),transparent);padding:2rem 2.5rem 1.5rem;color:#fefcf8;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 0.5s;">Individual Kata · Asian Games 2010</div>
-      <div class="g-cap" data-en="Asian Games 2010 · Kata Performance" data-jp="アジア競技大会2010年・形演武" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(26,22,18,0.75),transparent);padding:2rem 2.5rem 1.5rem;color:#fefcf8;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 0.5s;">Asian Games 2010 · Kata Performance</div>
+      <div class="g-cap active" data-en="Women's Individual Kata · Gold Medal · 21st WKF World Karate Championships · Paris, France 2012" data-jp="女子個人形・金メダル・第21回WKF世界空手道選手権大会・フランス・パリ・2012年" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(26,22,18,0.75),transparent);padding:2rem 2.5rem 1.5rem;color:#fefcf8;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 0.5s;">Women's Individual Kata · Gold Medal · 21st WKF World Karate Championships · Paris, France 2012</div>
+      <div class="g-cap" data-en="Final Performance · Women's Individual Kata · 21st WKF World Karate Championships · Paris 2012" data-jp="決勝演武・女子個人形・第21回WKF世界空手道選手権大会・パリ・2012年" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(26,22,18,0.75),transparent);padding:2rem 2.5rem 1.5rem;color:#fefcf8;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 0.5s;">Final Performance · Women's Individual Kata · 21st WKF World Karate Championships · Paris 2012</div>
+      <div class="g-cap" data-en="Gold Medal Performance · Women's Kata Final · 21st WKF World Karate Championships · Paris 2012" data-jp="金メダル演武・女子形決勝・第21回WKF世界空手道選手権大会・パリ・2012年" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(26,22,18,0.75),transparent);padding:2rem 2.5rem 1.5rem;color:#fefcf8;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 0.5s;">Gold Medal Performance · Women's Kata Final · 21st WKF World Karate Championships · Paris 2012</div>
+      <div class="g-cap" data-en="Women's Kata Final · Gold Medal · 21st WKF World Karate Championships · Paris, France 2012" data-jp="女子形決勝・金メダル・第21回WKF世界空手道選手権大会・フランス・パリ・2012年" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(26,22,18,0.75),transparent);padding:2rem 2.5rem 1.5rem;color:#fefcf8;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 0.5s;">Women's Kata Final · Gold Medal · 21st WKF World Karate Championships · Paris, France 2012</div>
+      <div class="g-cap" data-en="Women's Individual Kata · Gold Medal · Asian Games · Guangzhou, China 2010" data-jp="女子個人形・金メダル・アジア競技大会・中国・広州・2010年" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(26,22,18,0.75),transparent);padding:2rem 2.5rem 1.5rem;color:#fefcf8;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 0.5s;">Women's Individual Kata · Gold Medal · Asian Games · Guangzhou, China 2010</div>
+      <div class="g-cap" data-en="Individual Kata · Gold Medal · 16th Asian Games · Guangzhou, China 2010" data-jp="個人形・金メダル・第16回アジア競技大会・中国・広州・2010年" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(26,22,18,0.75),transparent);padding:2rem 2.5rem 1.5rem;color:#fefcf8;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 0.5s;">Individual Kata · Gold Medal · 16th Asian Games · Guangzhou, China 2010</div>
+      <div class="g-cap" data-en="Kata Demonstration · 16th Asian Games · Guangzhou, China 2010" data-jp="形演武・第16回アジア競技大会・中国・広州・2010年" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(26,22,18,0.75),transparent);padding:2rem 2.5rem 1.5rem;color:#fefcf8;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 0.5s;">Kata Demonstration · 16th Asian Games · Guangzhou, China 2010</div>
 
       <button class="g-prev" aria-label="Previous" style="position:absolute;top:50%;left:1.5rem;transform:translateY(-50%);background:rgba(254,252,248,0.15);border:1px solid rgba(254,252,248,0.3);color:#fefcf8;width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;backdrop-filter:blur(4px);z-index:5;transition:background 0.2s;">&#8592;</button>
       <button class="g-next" aria-label="Next" style="position:absolute;top:50%;right:1.5rem;transform:translateY(-50%);background:rgba(254,252,248,0.15);border:1px solid rgba(254,252,248,0.3);color:#fefcf8;width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;backdrop-filter:blur(4px);z-index:5;transition:background 0.2s;">&#8594;</button>
@@ -1108,10 +1133,10 @@
         <a href="mailto:usamirika.dojo2026@gmail.com">usamirika.dojo2026@gmail.com</a>
       </div>
       <div class="social-row">
-        <a href="https://www.instagram.com/usami.rika.dojo" class="social-btn" target="_blank" rel="noopener">
+        <a href="https://www.instagram.com/usami.rika.dojo" class="social-btn" target="_blank" rel="noopener" data-en="Instagram" data-jp="インスタグラム">
           Instagram
         </a>
-        <a href="http://www.facebook.com/share/1CAJQdfSEn/" class="social-btn" target="_blank" rel="noopener">
+        <a href="http://www.facebook.com/share/1CAJQdfSEn/" class="social-btn" target="_blank" rel="noopener" data-en="Facebook" data-jp="フェイスブック">
           Facebook
         </a>
         <a href="https://forms.gle/ptfqqEr7b3CJVRGA7" class="btn-primary" target="_blank" rel="noopener" style="font-size:0.62rem;letter-spacing:0.18em;" data-en="Enroll Now" data-jp="登録する">
@@ -1446,6 +1471,86 @@
   // Wrap applyLanguage calls with a brief opacity dip
   const _origApplyLang = window._applyLang;
   // Handled inline: add opacity transition class before toggle, remove after
+
+
+  // ── BLOG ─────────────────────────────────────────
+  (function() {
+    const container = document.getElementById('blog-posts-container');
+    const dataEl = document.getElementById('blog-data');
+    if (!container || !dataEl) return;
+
+    let posts;
+    try { posts = JSON.parse(dataEl.textContent); } catch(e) { return; }
+
+    function bodyHTML(text) {
+      return text.split('\n\n').map(p => `<p style="margin-bottom:1.1rem;">${p}</p>`).join('');
+    }
+
+    function renderPosts(isJP) {
+      container.innerHTML = '';
+      posts.forEach(post => {
+        const slug = post.slug;
+        const viewKey = 'views_' + slug;
+        const likeKey = 'liked_' + slug;
+        const viewCount = parseInt(localStorage.getItem(viewKey) || '0') + 1;
+        localStorage.setItem(viewKey, viewCount);
+        const liked = localStorage.getItem(likeKey) === '1';
+
+        const article = document.createElement('article');
+        article.style.cssText = 'border-top:1px solid var(--border);padding:3rem 0;';
+        article.innerHTML = `
+          <div style="font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:0.9rem;"
+               data-en="${post.date_en}" data-jp="${post.date_jp}">${isJP ? post.date_jp : post.date_en}</div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:300;color:var(--ink);line-height:1.15;margin-bottom:1.75rem;"
+              data-en="${post.title_en}" data-jp="${post.title_jp}">${isJP ? post.title_jp : post.title_en}</h3>
+          ${post.image ? `<img src="${post.image}" alt="${isJP ? post.title_jp : post.title_en}" style="width:100%;max-height:480px;object-fit:cover;display:block;margin-bottom:2rem;">` : ''}
+          <div class="bilingual" style="font-size:0.95rem;line-height:1.9;color:var(--ink-soft);">
+            <div class="lang-en">${bodyHTML(post.body_en)}</div>
+            <div class="lang-jp" style="font-family:'Shippori Mincho',serif;">${bodyHTML(post.body_jp)}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1.5rem;margin-top:2rem;padding-top:1.25rem;border-top:1px solid var(--border);font-size:0.72rem;letter-spacing:0.1em;color:var(--ink-soft);">
+            <span style="display:flex;align-items:center;gap:0.4rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span class="view-count">${viewCount}</span>
+            </span>
+            <button class="like-btn" data-slug="${slug}" data-liked="${liked ? '1' : '0'}" style="display:flex;align-items:center;gap:0.4rem;background:none;border:none;cursor:pointer;font-size:0.72rem;letter-spacing:0.1em;color:${liked ? 'var(--red)' : 'var(--ink-soft)'};padding:0;font-family:'Montserrat',sans-serif;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="${liked ? 'var(--red)' : 'none'}" stroke="${liked ? 'var(--red)' : 'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <span class="like-count">${parseInt(localStorage.getItem('likecount_' + slug) || '0')}</span>
+            </button>
+            <span style="display:flex;align-items:center;gap:0.4rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              0
+            </span>
+          </div>
+        `;
+        container.appendChild(article);
+      });
+
+      // Like button logic
+      container.querySelectorAll('.like-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const slug = btn.dataset.slug;
+          const likeKey = 'liked_' + slug;
+          const countKey = 'likecount_' + slug;
+          const wasLiked = localStorage.getItem(likeKey) === '1';
+          const count = parseInt(localStorage.getItem(countKey) || '0');
+          const newCount = wasLiked ? Math.max(0, count - 1) : count + 1;
+          localStorage.setItem(likeKey, wasLiked ? '0' : '1');
+          localStorage.setItem(countKey, newCount);
+          btn.querySelector('.like-count').textContent = newCount;
+          const newLiked = !wasLiked;
+          btn.style.color = newLiked ? 'var(--red)' : 'var(--ink-soft)';
+          btn.querySelector('svg').setAttribute('fill', newLiked ? 'var(--red)' : 'none');
+          btn.querySelector('svg').setAttribute('stroke', newLiked ? 'var(--red)' : 'currentColor');
+        });
+      });
+    }
+
+    renderPosts(document.body.classList.contains('jp'));
+    document.getElementById('langToggle').addEventListener('click', () => {
+      setTimeout(() => renderPosts(document.body.classList.contains('jp')), 0);
+    });
+  })();
 
 </script>
 
