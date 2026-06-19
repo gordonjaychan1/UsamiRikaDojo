@@ -71,6 +71,9 @@
     display: flex;
     list-style: none;
     gap: 2.5rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .nav-links a {
@@ -1006,7 +1009,7 @@
 </section>
 
 <!-- BLOG -->
-<section id="blog" class="reveal" style="padding: 7rem 6vw; background: var(--white);">
+<section id="blog" class="reveal" style="padding: 7rem 6vw; background: var(--paper-warm);">
   <div class="section-header">
     <span class="section-kicker" data-en="News" data-jp="お知らせ">News</span>
     <h2 class="section-title"><span data-en="From the Dojo" data-jp="道場より">From the Dojo</span></h2>
@@ -1492,53 +1495,84 @@
         const slug = post.slug;
         const viewKey = 'views_' + slug;
         const likeKey = 'liked_' + slug;
-        const viewCount = parseInt(localStorage.getItem(viewKey) || '0') + 1;
-        localStorage.setItem(viewKey, viewCount);
+        const countKey = 'likecount_' + slug;
         const liked = localStorage.getItem(likeKey) === '1';
+        const likeCount = parseInt(localStorage.getItem(countKey) || '0');
+        const viewCount = parseInt(localStorage.getItem(viewKey) || '0');
 
         const article = document.createElement('article');
-        article.style.cssText = 'border-top:1px solid var(--border);padding:3rem 0;';
-        article.innerHTML = `
-          <div style="font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:0.9rem;"
-               data-en="${post.date_en}" data-jp="${post.date_jp}">${isJP ? post.date_jp : post.date_en}</div>
-          <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:300;color:var(--ink);line-height:1.15;margin-bottom:1.75rem;"
-              data-en="${post.title_en}" data-jp="${post.title_jp}">${isJP ? post.title_jp : post.title_en}</h3>
-          ${post.image ? `<img src="${post.image}" alt="${isJP ? post.title_jp : post.title_en}" style="width:100%;max-height:480px;object-fit:cover;display:block;margin-bottom:2rem;">` : ''}
-          <div class="bilingual" style="font-size:0.95rem;line-height:1.9;color:var(--ink-soft);">
-            <div class="lang-en">${bodyHTML(post.body_en)}</div>
-            <div class="lang-jp" style="font-family:'Shippori Mincho',serif;">${bodyHTML(post.body_jp)}</div>
+        article.style.cssText = 'border-top:1px solid var(--border);';
+
+        // Collapsed header — always visible, click to expand
+        const header = document.createElement('div');
+        header.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:1.75rem 0;cursor:pointer;gap:2rem;';
+        header.innerHTML = `
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;"
+                 data-en="${post.date_en}" data-jp="${post.date_jp}">${isJP ? post.date_jp : post.date_en}</div>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,2.5vw,1.7rem);font-weight:300;color:var(--ink);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"
+                data-en="${post.title_en}" data-jp="${post.title_jp}">${isJP ? post.title_jp : post.title_en}</h3>
           </div>
-          <div style="display:flex;align-items:center;gap:1.5rem;margin-top:2rem;padding-top:1.25rem;border-top:1px solid var(--border);font-size:0.72rem;letter-spacing:0.1em;color:var(--ink-soft);">
-            <span style="display:flex;align-items:center;gap:0.4rem;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-              <span class="view-count">${viewCount}</span>
-            </span>
-            <button class="like-btn" data-slug="${slug}" data-liked="${liked ? '1' : '0'}" style="display:flex;align-items:center;gap:0.4rem;background:none;border:none;cursor:pointer;font-size:0.72rem;letter-spacing:0.1em;color:${liked ? 'var(--red)' : 'var(--ink-soft)'};padding:0;font-family:'Montserrat',sans-serif;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="${liked ? 'var(--red)' : 'none'}" stroke="${liked ? 'var(--red)' : 'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-              <span class="like-count">${parseInt(localStorage.getItem('likecount_' + slug) || '0')}</span>
-            </button>
-            <span style="display:flex;align-items:center;gap:0.4rem;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              0
-            </span>
+          ${post.image ? `<img src="${post.image}" alt="" style="width:72px;height:72px;object-fit:cover;flex-shrink:0;opacity:0.85;">` : ''}
+          <svg class="expand-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transition:transform 0.3s;"><polyline points="6 9 12 15 18 9"/></svg>
+        `;
+
+        // Expanded body — hidden by default
+        const body = document.createElement('div');
+        body.style.cssText = 'overflow:hidden;max-height:0;transition:max-height 0.5s cubic-bezier(0.4,0,0.2,1);';
+        body.innerHTML = `
+          <div style="padding-bottom:2rem;">
+            ${post.image ? `<img src="${post.image}" alt="${isJP ? post.title_jp : post.title_en}" style="width:100%;max-height:440px;object-fit:cover;display:block;margin-bottom:2rem;">` : ''}
+            <div class="bilingual" style="font-size:0.95rem;line-height:1.9;color:var(--ink-soft);">
+              <div class="lang-en">${bodyHTML(post.body_en)}</div>
+              <div class="lang-jp" style="font-family:'Shippori Mincho',serif;">${bodyHTML(post.body_jp)}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:1.5rem;margin-top:1.75rem;padding-top:1.25rem;border-top:1px solid var(--border);font-size:0.72rem;letter-spacing:0.1em;color:var(--ink-soft);">
+              <span style="display:flex;align-items:center;gap:0.4rem;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span class="view-count">${viewCount}</span>
+              </span>
+              <button class="like-btn" data-slug="${slug}" style="display:flex;align-items:center;gap:0.4rem;background:none;border:none;cursor:pointer;font-size:0.72rem;letter-spacing:0.1em;color:${liked ? 'var(--red)' : 'var(--ink-soft)'};padding:0;font-family:'Montserrat',sans-serif;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="${liked ? 'var(--red)' : 'none'}" stroke="${liked ? 'var(--red)' : 'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span class="like-count">${likeCount}</span>
+              </button>
+              <span style="display:flex;align-items:center;gap:0.4rem;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                0
+              </span>
+            </div>
           </div>
         `;
-        container.appendChild(article);
-      });
 
-      // Like button logic
-      container.querySelectorAll('.like-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const slug = btn.dataset.slug;
-          const likeKey = 'liked_' + slug;
-          const countKey = 'likecount_' + slug;
+        article.appendChild(header);
+        article.appendChild(body);
+        container.appendChild(article);
+
+        // Expand / collapse on header click
+        let expanded = false;
+        header.addEventListener('click', () => {
+          expanded = !expanded;
+          body.style.maxHeight = expanded ? body.scrollHeight + 'px' : '0';
+          header.querySelector('.expand-chevron').style.transform = expanded ? 'rotate(180deg)' : '';
+          if (expanded) {
+            // Increment view count once per open
+            const newViews = parseInt(localStorage.getItem(viewKey) || '0') + 1;
+            localStorage.setItem(viewKey, newViews);
+            body.querySelector('.view-count').textContent = newViews;
+          }
+        });
+
+        // Like button
+        body.querySelector('.like-btn').addEventListener('click', e => {
+          e.stopPropagation();
           const wasLiked = localStorage.getItem(likeKey) === '1';
           const count = parseInt(localStorage.getItem(countKey) || '0');
           const newCount = wasLiked ? Math.max(0, count - 1) : count + 1;
-          localStorage.setItem(likeKey, wasLiked ? '0' : '1');
-          localStorage.setItem(countKey, newCount);
-          btn.querySelector('.like-count').textContent = newCount;
           const newLiked = !wasLiked;
+          localStorage.setItem(likeKey, newLiked ? '1' : '0');
+          localStorage.setItem(countKey, newCount);
+          const btn = body.querySelector('.like-btn');
+          btn.querySelector('.like-count').textContent = newCount;
           btn.style.color = newLiked ? 'var(--red)' : 'var(--ink-soft)';
           btn.querySelector('svg').setAttribute('fill', newLiked ? 'var(--red)' : 'none');
           btn.querySelector('svg').setAttribute('stroke', newLiked ? 'var(--red)' : 'currentColor');
