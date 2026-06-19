@@ -1,14 +1,12 @@
 IMPROVE 
-in japanese it says multiple years in achievements
 
-
-how to do blog?
 
 Parallax hero — the photo scrolls slightly slower than the page for a depth effect
 
 
 WORKS
 updated english profile section
+blog
 Staggered reveal of title card — the image loads first, then the kicker text, then the big title letters drop in one by one, then the tagline, then the buttons.
 Loading screen — the dojo name in gold pulses gently on a dark background for ~2 seconds while fonts load, then fades away into the hero animation
 Scroll reveals — every major section (About, Achievements, Gallery, Instruction, Contact) fades up as it enters the viewport
