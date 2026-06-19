@@ -702,7 +702,7 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
-    #hero { grid-template-columns: 1fr; }
+    #hero { grid-template-columns: 1fr; padding-top: 72px; }
     .hero-image-col { height: 55vh; }
     #about { grid-template-columns: 1fr; }
     .instruction-grid { grid-template-columns: 1fr; }
@@ -711,7 +711,60 @@
     .nav-links { display: none; }
     .about-img-wrap::after { display: none; }
     .about-label { left: 0; }
+    #nav-hamburger { display: flex; }
   }
+
+  /* ── HAMBURGER ── */
+  #nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    margin-left: 1rem;
+  }
+  #nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    background: var(--ink);
+    transition: transform 0.25s, opacity 0.25s;
+    transform-origin: center;
+  }
+  #nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  #nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  #nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* ── MOBILE MENU ── */
+  #mobile-menu {
+    display: none;
+    position: fixed;
+    top: 72px;
+    left: 0; right: 0;
+    background: rgba(247,244,239,0.98);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+    z-index: 99;
+    padding: 1.5rem 6vw 2rem;
+    flex-direction: column;
+    gap: 0;
+  }
+  #mobile-menu.open { display: flex; }
+  #mobile-menu a {
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 1rem 0;
+    border-bottom: 0.5px solid var(--border);
+    transition: color 0.2s;
+  }
+  #mobile-menu a:last-child { border-bottom: none; }
+  #mobile-menu a:hover, #mobile-menu a.active { color: var(--red); }
 
   /* Dual-language paragraphs: both versions in DOM */
   .bilingual { position: relative; }
@@ -895,7 +948,19 @@
     <span style="color:var(--border);">|</span>
     <span id="langJP" style="color:var(--ink-soft);">日本語</span>
   </button>
+  <button id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+  <a href="#about" data-en="About Rika Dojo" data-jp="Rika道場について">About Rika Dojo</a>
+  <a href="#achievements" data-en="Achievements" data-jp="主な戦績">Achievements</a>
+  <a href="#blog" data-en="Blog" data-jp="ブログ">Blog</a>
+  <a href="#gallery" data-en="Gallery" data-jp="ギャラリー">Gallery</a>
+  <a href="#instruction" data-en="Instruction" data-jp="指導について">Instruction</a>
+  <a href="#contact" data-en="Contact" data-jp="お問い合わせ">Contact</a>
+</div>
 
 <div id="backToTop" aria-label="Back to top" role="button" tabindex="0">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
@@ -1481,6 +1546,47 @@
   const _origApplyLang = window._applyLang;
   // Handled inline: add opacity transition class before toggle, remove after
 
+
+  // ── MOBILE NAV ───────────────────────────────────
+  (function() {
+    const hamburger = document.getElementById('nav-hamburger');
+    const menu = document.getElementById('mobile-menu');
+    if (!hamburger || !menu) return;
+
+    function closeMenu() {
+      hamburger.classList.remove('open');
+      menu.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    }
+
+    hamburger.addEventListener('click', () => {
+      const opening = !menu.classList.contains('open');
+      hamburger.classList.toggle('open');
+      menu.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    });
+
+    // Close when a link is clicked
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+    // Close when clicking outside
+    document.addEventListener('click', e => {
+      if (!hamburger.contains(e.target) && !menu.contains(e.target)) closeMenu();
+    });
+
+    // Keep mobile menu link text in sync with language toggle
+    const langBtn = document.getElementById('langToggle');
+    if (langBtn) {
+      langBtn.addEventListener('click', () => {
+        setTimeout(() => {
+          const isJP = document.body.classList.contains('jp');
+          menu.querySelectorAll('a[data-en][data-jp]').forEach(a => {
+            a.textContent = isJP ? a.dataset.jp : a.dataset.en;
+          });
+        }, 0);
+      });
+    }
+  })();
 
   // ── BLOG ─────────────────────────────────────────
   (function() {
