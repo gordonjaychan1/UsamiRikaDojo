@@ -167,7 +167,12 @@
   }
 
   .hero-text-col::before {
-    content: '空手道';
+    /* Stack the kanji vertically via hard line breaks (\A) rather than
+       writing-mode: vertical-rl — that property was being ignored here
+       and the characters rendered horizontally behind the title */
+    content: '空\A手\A道';
+    white-space: pre;
+    text-align: center;
     position: absolute;
     right: -0.05em;
     top: 50%;
@@ -175,7 +180,6 @@
     font-family: 'Shippori Mincho', serif;
     font-size: 14rem;
     color: rgba(26,22,18,0.04);
-    writing-mode: vertical-rl;
     pointer-events: none;
     line-height: 1;
   }
