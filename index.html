@@ -732,7 +732,9 @@
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     #hero { grid-template-columns: 1fr; padding-top: 72px; }
-    .hero-image-col { height: 55vh; }
+    /* Match the box to the photo's 3:2 frame so `cover` shows the full
+       width — a fixed 55vh box cropped ~22% off each side on phones */
+    .hero-image-col { height: auto; aspect-ratio: 3 / 2; }
     /* inline styles set these grids to multi-column — override with !important */
     #about { grid-template-columns: 1fr !important; gap: 3rem !important; padding: 5rem 6vw !important; align-items: start !important; }
     .about-text { min-height: 0; }
@@ -767,6 +769,20 @@
     /* Drop the "Japan Karate ·" prefix so the logo, toggle and menu button fit */
     .logo-prefix { display: none; }
     #about, #contact .contact-grid { padding: 4rem 6vw !important; }
+
+    /* Footer: the desktop space-between row wraps badly on phones —
+       stack into a centered column with logo, icons, then email */
+    footer {
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      gap: 1.5rem;
+      padding: 2.5rem 6vw;
+    }
+    footer > * { flex: none; }
+    .footer-logo { order: 1; }
+    footer > div:nth-child(2) { order: 2; }
+    footer p { order: 3; text-align: center !important; }
   }
 
   /* ── HAMBURGER ── */
