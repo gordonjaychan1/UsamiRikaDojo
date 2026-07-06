@@ -755,10 +755,17 @@
     .gallery-lightbox { width: 100% !important; padding: 0 4vw; }
     #gallery .video-wrap { width: 100% !important; padding: 0 4vw; margin-top: 3.5rem !important; }
     .contact-flyer { margin-left: 0 !important; }
-    .contact-flyer img { width: 100% !important; max-height: none !important; }
+    /* box-sizing + a tighter shadow so the flyer's 40px blur doesn't bleed
+       past the right gutter and spill off-screen on iOS Safari */
+    .contact-flyer img { width: 100% !important; max-height: none !important; box-sizing: border-box; box-shadow: 0 6px 18px rgba(26,22,18,0.15) !important; }
     /* Shrink oversized decorative kanji so it doesn't force scroll */
     .hero-text-col::before { font-size: 8rem; }
     .hero-text-col { padding: 3.5rem 6vw 4rem; }
+    /* Stack the 3 contact buttons vertically — side-by-side, "Enroll Now"
+       overflowed past the right edge on phones */
+    .social-row { flex-direction: column; align-items: stretch; gap: 0.75rem; }
+    .social-row .social-btn,
+    .social-row .btn-primary { width: 100%; justify-content: center; text-align: center; }
   }
 
   @media (max-width: 600px) {
