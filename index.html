@@ -29,6 +29,38 @@
 <meta name="twitter:description" content="The dojo of 2012 World Kata Champion Rika Usami in Tottori, Japan. Beginners welcome.">
 <meta name="twitter:image" content="https://gordonjaychan1.github.io/UsamiRikaDojo/hero.jpg">
 
+<!-- Structured data — helps search engines understand the dojo -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SportsActivityLocation", "SportsClub"],
+  "name": "Usami Rika Dojo",
+  "alternateName": "宇佐美Rika道場",
+  "description": "The karate dojo of 2012 World Kata Champion Rika Usami in Iwami, Tottori, Japan. Group and private instruction for all ages and levels; beginners welcome from age 4.",
+  "url": "https://gordonjaychan1.github.io/UsamiRikaDojo/",
+  "image": "https://gordonjaychan1.github.io/UsamiRikaDojo/hero.jpg",
+  "email": "usamirika.dojo2026@gmail.com",
+  "sport": "Karate",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Iwami",
+    "addressRegion": "Tottori",
+    "addressCountry": "JP"
+  },
+  "founder": {
+    "@type": "Person",
+    "name": "Rika Usami",
+    "alternateName": "宇佐美 里香",
+    "jobTitle": "Head Instructor",
+    "award": "2012 WKF World Karate Championships — Women's Kata Gold Medal"
+  },
+  "sameAs": [
+    "https://www.instagram.com/usami.rika.dojo",
+    "http://www.facebook.com/share/1CAJQdfSEn/"
+  ]
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Shippori+Mincho:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -1001,6 +1033,20 @@
     transition: opacity 0.15s ease;
   }
 
+  /* ── REDUCED MOTION ──
+     Respect visitors who prefer less animation: collapse entrance
+     animations/transitions to near-zero and make sure every .reveal
+     section is shown, so nothing stays hidden waiting on an animation */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+    .reveal { opacity: 1 !important; transform: none !important; }
+  }
+
 </style>
 </head>
 <body>
@@ -1236,7 +1282,7 @@
   </div>
 </section>
 
-<!-- INSTRUCTION --><!-- INSTRUCTION -->
+<!-- INSTRUCTION -->
 <section id="instruction" class="reveal" style="padding: 5rem 0; background: var(--paper-warm);">
   <div>
     <div class="section-header" style="padding:0 6vw;">
