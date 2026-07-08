@@ -24,19 +24,26 @@ Features:
 
 ```
 .
-├── index.html      # The entire site — markup, CSS, and JS
-├── favicon.svg     # Site icon (kept at repo root by convention)
-├── images/         # All photos and graphics
-│   ├── hero.jpg
-│   ├── about-champion.jpg
-│   ├── gallery-1.jpg … gallery-7.jpg
-│   ├── group-lessons.jpg
-│   ├── private-lessons.jpg
-│   ├── seminars.jpg
-│   ├── flyer.jpg
-│   └── usamidojo.avif
+├── index.html            # The entire site — markup, CSS, and JS
+├── favicon.svg           # Site icon (kept at repo root by convention)
+├── favicon-32.png        # PNG favicon fallback
+├── apple-touch-icon.png  # 180×180 iOS home-screen icon
+├── images/               # All photos and graphics (JPEG + AVIF pairs)
+│   ├── hero.jpg / hero.avif
+│   ├── about-champion.*, flyer.*, seminars.*
+│   ├── group-lessons.*, private-lessons.*, usamidojo.*
+│   └── gallery-1 … gallery-7 (.jpg + .avif)
+├── fonts/                # Self-hosted Latin fonts + fonts.css
+│   ├── fonts.css
+│   ├── cormorant-garamond-*.woff2
+│   └── montserrat-*.woff2
 └── README.md
 ```
+
+**Fonts:** the Latin faces (Cormorant Garamond, Montserrat) are self-hosted in
+`fonts/` (the `latin` subset). The Japanese face (Shippori Mincho) is loaded
+from Google Fonts, which subsets its large glyph set on demand — self-hosting it
+would mean shipping hundreds of subset files.
 
 ## Editing content
 
