@@ -88,6 +88,18 @@
 
   html { scroll-behavior: smooth; }
 
+  /* Respect users who ask for less motion: disable smooth scroll and
+     collapse animations/transitions to near-instant. Count-up and
+     programmatic scrolling are additionally guarded in JS. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
   body {
     font-family: 'Montserrat', sans-serif;
     background: var(--paper);
@@ -954,6 +966,18 @@
     pointer-events: none;
   }
 
+  /* Touch devices have no hover; JS keeps the current caption visible
+     (see gallery script). Here we just shrink it — smaller text and
+     tighter padding — so it covers less of the photo than on desktop. */
+  @media (hover: none) {
+    .gallery-main .g-cap {
+      font-size: 0.55rem !important;
+      letter-spacing: 0.05em !important;
+      padding: 0.75rem 1rem 0.7rem !important;
+      line-height: 1.5;
+    }
+  }
+
   /* ── 5. ACHIEVEMENT CARD HOVER ── */
   .achievement-card {
     background: rgba(255,255,255,0.04);
@@ -1377,6 +1401,11 @@
 </footer>
 
 <script>
+  // Honour the OS "reduce motion" setting for JS-driven animation
+  // (count-up) and programmatic smooth scrolling.
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const scrollBehavior = prefersReduced ? 'auto' : 'smooth';
+
   // Nav shadow on scroll
   const nav = document.querySelector('nav');
   window.addEventListener('scroll', () => {
@@ -1412,11 +1441,14 @@
       // hide old
       imgs[cur].style.opacity = '0';
       hideCap(cur);
+      caps[cur].classList.remove('current');
       thumbDivs[cur].style.outline = '2px solid transparent';
       thumbDivs[cur].querySelector('img').style.opacity = '0.45';
       // show new
       cur = (n + total) % total;
       imgs[cur].style.opacity = '1';
+      caps[cur].classList.add('current');
+      if (isTouch) showCap(cur);
       thumbDivs[cur].style.outline = '2px solid #b8965a';
       thumbDivs[cur].querySelector('img').style.opacity = '1';
       counter.textContent = cur + 1;
@@ -1424,9 +1456,15 @@
       // auto-scroll removed
     }
 
+    // Touch devices can't hover, so reveal the current caption on load
+    // and on every navigation instead of on mouseenter.
+    const isTouch = window.matchMedia('(hover: none)').matches;
+
     // Init: all caps hidden; first image visible
     imgs[0].style.opacity = '1';
-    caps.forEach(c => { c.style.opacity = '0'; c.style.transform = 'translateY(12px)'; });
+    caps.forEach(c => { c.style.opacity = '0'; c.style.transform = 'translateY(12px)'; c.classList.remove('current'); });
+    caps[0].classList.add('current');
+    if (isTouch) showCap(0);
     window._galleryCur = 0;
 
     document.querySelector('.g-prev').addEventListener('click', () => goTo(cur - 1));
@@ -1578,7 +1616,7 @@
       const target = document.querySelector(a.getAttribute('href'));
       if (!target) return;
       e.preventDefault();
-      window.scrollTo({ top: target.offsetTop - 72, behavior: 'smooth' });
+      window.scrollTo({ top: target.offsetTop - 72, behavior: scrollBehavior });
     });
   });
 
@@ -1588,8 +1626,11 @@
     window.addEventListener('scroll', () => {
       btn.classList.toggle('visible', window.scrollY > 400);
     }, { passive: true });
-    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-    btn.addEventListener('keydown', e => { if (e.key === 'Enter') window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    const toTop = () => window.scrollTo({ top: 0, behavior: scrollBehavior });
+    btn.addEventListener('click', toTop);
+    btn.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); toTop(); }
+    });
   })();
 
   // ── 6. STAT COUNT-UP ───────────────────────────────────────────
@@ -1599,6 +1640,13 @@
     function runCountUp() {
       if (window._statCountDone) return;
       window._statCountDone = true;
+      if (prefersReduced) {
+        // Skip the animation; show the final numbers immediately.
+        statEls.forEach(el => {
+          el.textContent = parseInt(el.getAttribute('data-target')) + (el.getAttribute('data-suffix') || '');
+        });
+        return;
+      }
       statEls.forEach(el => {
         const target = parseInt(el.getAttribute('data-target'));
         const suffix = el.getAttribute('data-suffix') || '';
@@ -1739,14 +1787,6 @@
     function renderPosts(isJP) {
       container.innerHTML = '';
       posts.forEach(post => {
-        const slug = post.slug;
-        const viewKey = 'views_' + slug;
-        const likeKey = 'liked_' + slug;
-        const countKey = 'likecount_' + slug;
-        const liked = localStorage.getItem(likeKey) === '1';
-        const likeCount = parseInt(localStorage.getItem(countKey) || '0');
-        const viewCount = parseInt(localStorage.getItem(viewKey) || '0');
-
         const article = document.createElement('article');
         article.style.cssText = 'border-top:1px solid var(--border);';
 
@@ -1774,16 +1814,6 @@
               <div class="lang-en">${bodyHTML(post.body_en)}</div>
               <div class="lang-jp" style="font-family:'Shippori Mincho',serif;">${bodyHTML(post.body_jp)}</div>
             </div>
-            <div style="display:flex;align-items:center;gap:1.5rem;margin-top:1.75rem;padding-top:1.25rem;border-top:1px solid var(--border);font-size:0.72rem;letter-spacing:0.1em;color:var(--ink-soft);">
-              <span style="display:flex;align-items:center;gap:0.4rem;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                <span class="view-count">${viewCount}</span>
-              </span>
-              <button class="like-btn" data-slug="${slug}" style="display:flex;align-items:center;gap:0.4rem;background:none;border:none;cursor:pointer;font-size:0.72rem;letter-spacing:0.1em;color:${liked ? 'var(--red)' : 'var(--ink-soft)'};padding:0;font-family:'Montserrat',sans-serif;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="${liked ? 'var(--red)' : 'none'}" stroke="${liked ? 'var(--red)' : 'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                <span class="like-count">${likeCount}</span>
-              </button>
-            </div>
           </div>
         `;
 
@@ -1797,28 +1827,6 @@
           expanded = !expanded;
           body.style.maxHeight = expanded ? body.scrollHeight + 'px' : '0';
           header.querySelector('.expand-chevron').style.transform = expanded ? 'rotate(180deg)' : '';
-          if (expanded) {
-            // Increment view count once per open
-            const newViews = parseInt(localStorage.getItem(viewKey) || '0') + 1;
-            localStorage.setItem(viewKey, newViews);
-            body.querySelector('.view-count').textContent = newViews;
-          }
-        });
-
-        // Like button
-        body.querySelector('.like-btn').addEventListener('click', e => {
-          e.stopPropagation();
-          const wasLiked = localStorage.getItem(likeKey) === '1';
-          const count = parseInt(localStorage.getItem(countKey) || '0');
-          const newCount = wasLiked ? Math.max(0, count - 1) : count + 1;
-          const newLiked = !wasLiked;
-          localStorage.setItem(likeKey, newLiked ? '1' : '0');
-          localStorage.setItem(countKey, newCount);
-          const btn = body.querySelector('.like-btn');
-          btn.querySelector('.like-count').textContent = newCount;
-          btn.style.color = newLiked ? 'var(--red)' : 'var(--ink-soft)';
-          btn.querySelector('svg').setAttribute('fill', newLiked ? 'var(--red)' : 'none');
-          btn.querySelector('svg').setAttribute('stroke', newLiked ? 'var(--red)' : 'currentColor');
         });
       });
     }
