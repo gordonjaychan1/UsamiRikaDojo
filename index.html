@@ -951,6 +951,68 @@
     transform: translateY(0);
   }
 
+  /* ── SUMI-E BRUSH REVEAL ──────────────────────────────────────
+     A ragged clip-path edge sweeps across the image like an ink
+     stroke. JS adds .brush-ready then .inked, so with JS disabled
+     (or reduced motion) the image just renders normally. */
+  .brush-ready {
+    clip-path: polygon(0% 0%, 3% 0%, 0% 12%, 4% 25%, 1% 38%, 5% 50%, 0% 62%, 4% 75%, 1% 88%, 3% 100%, 0% 100%);
+  }
+  .brush-ready.inked {
+    clip-path: polygon(0% 0%, 108% 0%, 103% 12%, 110% 25%, 104% 38%, 112% 50%, 103% 62%, 109% 75%, 104% 88%, 110% 100%, 0% 100%);
+  }
+  /* Name both properties — .instruction-card img already sets a
+     transform transition we must not clobber. */
+  .about-img-wrap img.brush-ready,
+  .instruction-card img.brush-ready {
+    transition: transform 0.5s ease, clip-path 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Gold section rule draws itself in like a brush stroke */
+  .rule-ready {
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .rule-ready.drawn { transform: scaleX(1); }
+
+  /* ── SPLIT-TEXT HEADING REVEAL ── */
+  .split-word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.45em);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .split-word.in { opacity: 1; transform: translateY(0); }
+
+  /* ── GOLD SHIMMER SWEEP ──────────────────────────────────────
+     Guarded by @supports: where background-clip:text is missing the
+     rule never applies and the kicker stays solid gold. */
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .shimmer {
+      background-image: linear-gradient(100deg,
+        var(--gold) 35%, var(--gold-light) 46%, #f3e6c4 50%, var(--gold-light) 54%, var(--gold) 65%);
+      background-size: 300% 100%;
+      background-position: 150% 0;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: shimmerSweep 2.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    /* Achievements sits on dark ink — shimmer needs the lighter gold */
+    #achievements .shimmer {
+      background-image: linear-gradient(100deg,
+        var(--gold-light) 35%, #f3e6c4 46%, #fffaf0 50%, #f3e6c4 54%, var(--gold-light) 65%);
+    }
+  }
+  @keyframes shimmerSweep {
+    from { background-position: 150% 0; }
+    to   { background-position: -60% 0; }
+  }
+
   /* ── 3. ACTIVE NAV LINK ── */
   .nav-links a.active {
     color: var(--red);
@@ -1075,6 +1137,12 @@
       scroll-behavior: auto !important;
     }
     .reveal { opacity: 1 !important; transform: none !important; }
+    /* Belt-and-braces: the JS skips these entirely under reduced motion,
+       but make sure nothing can be left clipped or invisible. */
+    .brush-ready { clip-path: none !important; }
+    .rule-ready { transform: none !important; }
+    .split-word { opacity: 1 !important; transform: none !important; }
+    .shimmer { animation: none !important; }
   }
 
 </style>
@@ -1767,6 +1835,86 @@
         }, 0);
       });
     }
+  })();
+
+  // ── SUMI-E BRUSH REVEAL · SPLIT HEADINGS · GOLD SHIMMER ───────
+  (function() {
+    // Extra flourish is opt-out for reduce-motion users: skip entirely so
+    // no element ever depends on an animation to become visible.
+    if (prefersReduced) return;
+
+    // Split a heading into spans. Japanese has no spaces, so stagger it
+    // per character; Latin text staggers per word.
+    function splitInto(el) {
+      const text = el.textContent;
+      if (!text.trim() || el.querySelector('.split-word')) return null;
+      const isCJK = /[\u3000-\u9FFF\uFF00-\uFFEF]/.test(text);
+      const tokens = isCJK ? Array.from(text.trim()) : text.trim().split(/\s+/);
+      el.textContent = '';
+      return tokens.map((t, i) => {
+        const s = document.createElement('span');
+        s.className = 'split-word';
+        s.textContent = t;
+        el.appendChild(s);
+        if (!isCJK && i < tokens.length - 1) el.appendChild(document.createTextNode(' '));
+        return s;
+      });
+    }
+
+    function revealHeading(el) {
+      const spans = splitInto(el);
+      if (!spans) return;
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        spans.forEach((s, i) => {
+          s.style.transitionDelay = (i * 0.055) + 's';
+          s.classList.add('in');
+        });
+      }));
+    }
+
+    // Without IntersectionObserver nothing may be left hidden, so bail out
+    // before any element gets its pre-animation (clipped//scaled-to-0) state.
+    if (!('IntersectionObserver' in window)) return;
+
+    function reveal(el) {
+      if (el.matches('.section-title span[data-en]')) revealHeading(el);
+      else if (el.matches('.section-kicker')) el.classList.add('shimmer');
+      else if (el.matches('.section-rule')) el.classList.add('drawn');
+      else el.classList.add('inked');
+    }
+
+    let observerFired = false;
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        observerFired = true;
+        io.unobserve(e.target);
+        reveal(e.target);
+      });
+    }, { threshold: 0.25 });
+
+    // Wait out the loading screen / entrance sequence, matching the delay
+    // the other observers use, so nothing animates while still hidden.
+    setTimeout(() => {
+      document.querySelectorAll('.section-title span[data-en], .section-kicker')
+        .forEach(el => io.observe(el));
+      document.querySelectorAll('.section-rule').forEach(el => {
+        el.classList.add('rule-ready');
+        io.observe(el);
+      });
+      document.querySelectorAll('.about-img-wrap img, .instruction-card img').forEach(el => {
+        el.classList.add('brush-ready');
+        io.observe(el);
+      });
+
+      // Failsafe: if the observer has not fired even once by now it is not
+      // working (or the page is not being rendered), so show everything
+      // rather than leave images clipped and rules scaled to nothing.
+      setTimeout(() => {
+        if (observerFired) return;
+        document.querySelectorAll('.brush-ready, .rule-ready').forEach(reveal);
+      }, 6000);
+    }, 2000);
   })();
 
   // ── BLOG ─────────────────────────────────────────
