@@ -979,33 +979,6 @@
      that no flourish can leave content stranded invisible. */
   .anim-done { animation: none !important; }
 
-  /* ── GOLD SHIMMER SWEEP ──────────────────────────────────────
-     Guarded by @supports: where background-clip:text is missing the
-     rule never applies and the kicker stays solid gold. */
-  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
-    .shimmer {
-      background-image: linear-gradient(100deg,
-        var(--gold) 35%, var(--gold-light) 46%, #f3e6c4 50%, var(--gold-light) 54%, var(--gold) 65%);
-      background-size: 300% 100%;
-      background-position: 150% 0;
-      background-repeat: no-repeat;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      color: transparent;
-      animation: shimmerSweep 2.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-    /* Achievements sits on dark ink — shimmer needs the lighter gold */
-    #achievements .shimmer {
-      background-image: linear-gradient(100deg,
-        var(--gold-light) 35%, #f3e6c4 46%, #fffaf0 50%, #f3e6c4 54%, var(--gold-light) 65%);
-    }
-  }
-  @keyframes shimmerSweep {
-    from { background-position: 150% 0; }
-    to   { background-position: -60% 0; }
-  }
-
   /* ── 3. ACTIVE NAV LINK ── */
   .nav-links a.active {
     color: var(--red);
@@ -1132,7 +1105,7 @@
     .reveal { opacity: 1 !important; transform: none !important; }
     /* Belt-and-braces: the JS skips these entirely under reduced motion,
        but make sure nothing can be left clipped or invisible. */
-    .rule-in, .split-word, .shimmer { animation: none !important; }
+    .rule-in, .split-word { animation: none !important; }
   }
 
 </style>
@@ -1874,7 +1847,6 @@
         const spans = splitInto(el);
         if (spans) settle(spans, spans.length * 85 + 1000);
       }
-      else if (el.matches('.section-kicker')) playOnce(el, 'shimmer', 2900);
       else if (el.matches('.section-rule')) playOnce(el, 'rule-in', 1400);
     }
 
@@ -1890,7 +1862,7 @@
     // the other observers use.
     setTimeout(() => {
       document.querySelectorAll(
-        '.section-title span[data-en], .section-kicker, .section-rule'
+        '.section-title span[data-en], .section-rule'
       ).forEach(el => io.observe(el));
     }, 2000);
   })();
