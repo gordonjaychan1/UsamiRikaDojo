@@ -1579,22 +1579,39 @@
     }
 
     langToggle.addEventListener('click', () => {
+      // Work out the new language up front: the flip happens inside the
+      // crossfade timeout, so reading isJapanese here would save the value
+      // we are switching away from.
+      const next = !isJapanese;
+      try { localStorage.setItem('lang', next ? 'jp' : 'en'); } catch(e) {}
+
       // Brief crossfade on toggle
       document.body.style.transition = 'opacity 0.216s ease';
       document.body.style.opacity = '0.6';
       setTimeout(() => {
-        isJapanese = !isJapanese;
+        isJapanese = next;
         applyLanguage();
         document.body.style.opacity = '1';
         setTimeout(() => { document.body.style.transition = ''; }, 290);
       }, 216);
-      try { localStorage.setItem('lang', isJapanese ? 'jp' : 'en'); } catch(e) {}
     });
 
-    // Restore on load
-    try {
-      if (localStorage.getItem('lang') === 'jp') { isJapanese = true; applyLanguage(); }
-    } catch(e) {}
+    // Pick the starting language: an explicit choice from a previous visit
+    // always wins, otherwise follow the browser's preferred languages so
+    // Japanese visitors land on Japanese and everyone else gets English.
+    let saved = null;
+    try { saved = localStorage.getItem('lang'); } catch(e) {}
+    if (saved === 'jp' || saved === 'en') {
+      isJapanese = (saved === 'jp');
+    } else {
+      // navigator.languages is ordered by preference, so only the first
+      // entry decides — somebody who lists en-US first wants English even
+      // if they also read Japanese.
+      const prefs = navigator.languages || [];
+      const top = prefs[0] || navigator.language || '';
+      isJapanese = /^ja\b/i.test(top);
+    }
+    applyLanguage();
   })();
 
   // ── 1. LOADING SCREEN ──────────────────────────────────────────
