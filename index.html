@@ -952,39 +952,44 @@
   }
 
   /* ── SUMI-E BRUSH REVEAL ──────────────────────────────────────
-     A ragged clip-path edge sweeps across the image like an ink
-     stroke. JS adds .brush-ready then .inked, so with JS disabled
-     (or reduced motion) the image just renders normally. */
-  .brush-ready {
-    clip-path: polygon(0% 0%, 3% 0%, 0% 12%, 4% 25%, 1% 38%, 5% 50%, 0% 62%, 4% 75%, 1% 88%, 3% 100%, 0% 100%);
+     The hidden (clipped) state lives ONLY inside the keyframes, never
+     as a resting style. An element that never receives .ink-in — JS
+     off, observer never fires, reduced motion — is simply fully
+     visible, and `both` fill leaves it visible after the sweep. Nothing
+     can be stranded invisible waiting on an animation. */
+  @keyframes inkIn {
+    from { clip-path: polygon(0% 0%, 3% 0%, 0% 12%, 4% 25%, 1% 38%, 5% 50%, 0% 62%, 4% 75%, 1% 88%, 3% 100%, 0% 100%); }
+    to   { clip-path: polygon(0% 0%, 108% 0%, 103% 12%, 110% 25%, 104% 38%, 112% 50%, 103% 62%, 109% 75%, 104% 88%, 110% 100%, 0% 100%); }
   }
-  .brush-ready.inked {
-    clip-path: polygon(0% 0%, 108% 0%, 103% 12%, 110% 25%, 104% 38%, 112% 50%, 103% 62%, 109% 75%, 104% 88%, 110% 100%, 0% 100%);
-  }
-  /* Name both properties — .instruction-card img already sets a
-     transform transition we must not clobber. */
-  .about-img-wrap img.brush-ready,
-  .instruction-card img.brush-ready {
-    transition: transform 0.5s ease, clip-path 1.5s cubic-bezier(0.22, 1, 0.36, 1);
-  }
+  .ink-in { animation: inkIn 1.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
   /* Gold section rule draws itself in like a brush stroke */
-  .rule-ready {
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+  @keyframes ruleIn {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
   }
-  .rule-ready.drawn { transform: scaleX(1); }
+  .rule-in {
+    transform-origin: left center;
+    animation: ruleIn 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
 
-  /* ── SPLIT-TEXT HEADING REVEAL ── */
+  /* ── SPLIT-TEXT HEADING REVEAL ──
+     Spans only exist once JS has split the heading, and they animate
+     themselves in on creation — so there is no armed hidden state. */
+  @keyframes wordIn {
+    from { opacity: 0; transform: translateY(0.45em); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
   .split-word {
     display: inline-block;
-    opacity: 0;
-    transform: translateY(0.45em);
-    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    animation: wordIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
-  .split-word.in { opacity: 1; transform: translateY(0); }
+
+  /* Added by JS once the sweep has had time to finish. Every hidden state
+     above lives only inside keyframes, so switching the animation off is
+     always the fully-visible resting state — this is the hard guarantee
+     that no flourish can leave content stranded invisible. */
+  .anim-done { animation: none !important; }
 
   /* ── GOLD SHIMMER SWEEP ──────────────────────────────────────
      Guarded by @supports: where background-clip:text is missing the
@@ -1139,10 +1144,7 @@
     .reveal { opacity: 1 !important; transform: none !important; }
     /* Belt-and-braces: the JS skips these entirely under reduced motion,
        but make sure nothing can be left clipped or invisible. */
-    .brush-ready { clip-path: none !important; }
-    .rule-ready { transform: none !important; }
-    .split-word { opacity: 1 !important; transform: none !important; }
-    .shimmer { animation: none !important; }
+    .ink-in, .rule-in, .split-word, .shimmer { animation: none !important; }
   }
 
 </style>
@@ -1854,6 +1856,7 @@
       return tokens.map((t, i) => {
         const s = document.createElement('span');
         s.className = 'split-word';
+        s.style.animationDelay = (i * 0.055) + 's';
         s.textContent = t;
         el.appendChild(s);
         if (!isCJK && i < tokens.length - 1) el.appendChild(document.createTextNode(' '));
@@ -1861,59 +1864,48 @@
       });
     }
 
-    function revealHeading(el) {
-      const spans = splitInto(el);
-      if (!spans) return;
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        spans.forEach((s, i) => {
-          s.style.transitionDelay = (i * 0.055) + 's';
-          s.classList.add('in');
-        });
-      }));
-    }
-
-    // Without IntersectionObserver nothing may be left hidden, so bail out
-    // before any element gets its pre-animation (clipped//scaled-to-0) state.
     if (!('IntersectionObserver' in window)) return;
 
-    function reveal(el) {
-      if (el.matches('.section-title span[data-en]')) revealHeading(el);
-      else if (el.matches('.section-kicker')) el.classList.add('shimmer');
-      else if (el.matches('.section-rule')) el.classList.add('drawn');
-      else el.classList.add('inked');
+    // Once the sweep has had time to run, switch the animation off — the
+    // resting style is the visible one, so a frozen or skipped animation
+    // still ends up visible rather than stuck mid-reveal.
+    function settle(els, ms) {
+      setTimeout(() => els.forEach(el => el.classList.add('anim-done')), ms);
+    }
+    // For one-shot classes the cleanest resting state is simply not having
+    // the class at all, which also restores the kicker's own gold colour.
+    function playOnce(el, cls, ms) {
+      el.classList.add(cls);
+      setTimeout(() => el.classList.remove(cls), ms);
     }
 
-    let observerFired = false;
+    // Each branch only ADDS an animation. Nothing is hidden beforehand, so
+    // an element the observer never reaches just stays plainly visible.
+    function reveal(el) {
+      if (el.matches('.section-title span[data-en]')) {
+        const spans = splitInto(el);
+        if (spans) settle(spans, spans.length * 55 + 900);
+      }
+      else if (el.matches('.section-kicker')) playOnce(el, 'shimmer', 2900);
+      else if (el.matches('.section-rule')) playOnce(el, 'rule-in', 1400);
+      else playOnce(el, 'ink-in', 1800);
+    }
+
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (!e.isIntersecting) return;
-        observerFired = true;
         io.unobserve(e.target);
         reveal(e.target);
       });
-    }, { threshold: 0.25 });
+    }, { threshold: 0.15 });
 
     // Wait out the loading screen / entrance sequence, matching the delay
-    // the other observers use, so nothing animates while still hidden.
+    // the other observers use.
     setTimeout(() => {
-      document.querySelectorAll('.section-title span[data-en], .section-kicker')
-        .forEach(el => io.observe(el));
-      document.querySelectorAll('.section-rule').forEach(el => {
-        el.classList.add('rule-ready');
-        io.observe(el);
-      });
-      document.querySelectorAll('.about-img-wrap img, .instruction-card img').forEach(el => {
-        el.classList.add('brush-ready');
-        io.observe(el);
-      });
-
-      // Failsafe: if the observer has not fired even once by now it is not
-      // working (or the page is not being rendered), so show everything
-      // rather than leave images clipped and rules scaled to nothing.
-      setTimeout(() => {
-        if (observerFired) return;
-        document.querySelectorAll('.brush-ready, .rule-ready').forEach(reveal);
-      }, 6000);
+      document.querySelectorAll(
+        '.section-title span[data-en], .section-kicker, .section-rule,' +
+        ' .about-img-wrap img, .instruction-card img'
+      ).forEach(el => io.observe(el));
     }, 2000);
   })();
 
