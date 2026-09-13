@@ -787,6 +787,23 @@
   }
 
   /* ── RESPONSIVE ── */
+  /* The centered nav links ignore the logo's width, so on laptop-sized screens
+     they crowd "Usami Rika Dojo" — tighten the links, then drop the prefix */
+  @media (max-width: 1600px) {
+    .nav-links { gap: 1.75rem; }
+  }
+  @media (max-width: 1440px) {
+    .logo-prefix { display: none; }
+  }
+  @media (max-width: 1050px) {
+    .nav-links { gap: 1.25rem; }
+  }
+  @media (max-width: 980px) {
+    .nav-links { gap: 1rem; }
+    .nav-links a { letter-spacing: 0.12em; }
+    .nav-logo { letter-spacing: 0.08em; }
+  }
+
   @media (max-width: 900px) {
     #hero { grid-template-columns: 1fr; padding-top: 72px; }
     /* Match the box to the photo's 3:2 frame so `cover` shows the full
@@ -1124,8 +1141,8 @@
 
 <nav>
   <a href="#" class="nav-logo">
-    <span id="navLogoEN"><span class="logo-prefix">Japan Karate &nbsp;·&nbsp; </span>Usami Rika Dojo</span>
-    <span id="navLogoJP" style="display:none;font-family:'Shippori Mincho',serif;letter-spacing:0.06em;">日本空手道 宇佐美Rika道場</span>
+    <span id="navLogoEN"><span class="logo-prefix">Japan Karate · </span>Usami Rika Dojo</span>
+    <span id="navLogoJP" style="display:none;font-family:'Shippori Mincho',serif;letter-spacing:0.06em;"><span class="logo-prefix">日本空手道 </span>宇佐美Rika道場</span>
   </a>
   <ul class="nav-links">
     <li><a href="#about" data-en="About Rika Dojo" data-jp="Rika道場について">About Rika Dojo</a></li>
